@@ -1,14 +1,14 @@
 package main
 
 import (
-	"os"
 	"log"
-	
+	"os"
+
 	"github.com/joho/godotenv"
 
 	"github.com/LainIwakuras-father/ValentinkaBot/internal/adapter"
-	"github.com/LainIwakuras-father/ValentinkaBot/internal/db"
 	"github.com/LainIwakuras-father/ValentinkaBot/internal/handlers"
+	"github.com/LainIwakuras-father/ValentinkaBot/internal/storage"
 )
 
 func main() {
@@ -24,8 +24,8 @@ func main() {
 		log.Panic(err)
 	}
 
-	db := db.NewDb()
-	//DI 
+	db := storage.NewMemoryStorage()
+	//DI
 	handler := handlers.NewHandler(bot, db)
 
 	// Запуск бота
@@ -34,36 +34,31 @@ func main() {
 
 	// 6. Обрабатываем обновления
 	for update := range updates {
-		// Обработка callback (нажатия на inline-кнопки)
-		if update.CallbackQuery != nil {
-			handler.HandleCallback(update.CallbackQuery)
-			continue
-		}
 
 		// Обработка сообщений
 		if update.Message == nil {
 			continue
 		}
-
+		// сохранить chat_id пользователя (в памяти)
 		userID := update.Message.From.ID
 		chatID := update.Message.Chat.ID
 
 		// Обработка команд
 		if update.Message.IsCommand() {
+
 			switch update.Message.Command() {
 			case "start":
 				handler.HandleStart(userID, chatID)
-			case "help":
-				handler.HandleHelp(chatID)
-			case "myid":
-				handler.HandleMyID(userID, chatID)
+			default:
+				// Можно добавить обработку неизвестных команд
+				if err := bot.SendMessage(chatID, "Неизвестная команда. Используй /start"); err != nil {
+					log.Printf("Ошибка отправки: %v", err)
+				}
 			}
 			continue
-		}
-
-		// Обработка текстовых сообщений
-		if update.Message.Text != "" {
+		} else {
 			handler.HandleTextMessage(userID, chatID, update.Message.Text)
 		}
+
 	}
 }
