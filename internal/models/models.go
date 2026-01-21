@@ -8,7 +8,7 @@ type Message struct {
 
 // Глобальное хранилище в памяти (потоконебезопасно, для демо)
 var MessageStore = make(map[string]Message)
-var messageCounter = 0
+
 
 // // состояния для валидации и сохранения
 // type UserState struct {

@@ -1,5 +1,5 @@
 package interfaces
 
-type TelegramAdapter interface {
-	SendMessage()
+type IBot interface {
+	SendMessage(chatID int64, message string) error
 }

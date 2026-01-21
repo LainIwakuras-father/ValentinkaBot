@@ -56,9 +56,10 @@ func main() {
 				}
 			}
 			continue
-		} else {
-			handler.HandleTextMessage(userID, chatID, update.Message.Text)
-		}
+		} // Обработка текстовых сообщений
+        if update.Message.Text != "" {
+            handler.HandleTextMessage(userID, chatID, update.Message.Text)
+        }
 
 	}
 }
