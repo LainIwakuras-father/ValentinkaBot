@@ -38,3 +38,6 @@ func (ta *TelegramAdapter) ListenUpdates() tgbotapi.UpdatesChannel {
 	u.Timeout = 60
 	return ta.Bot.GetUpdatesChan(u)
 }
+func (ta *TelegramAdapter) GetBotUsername() string {
+	return ta.Bot.Self.UserName
+}

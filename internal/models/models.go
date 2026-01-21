@@ -6,9 +6,10 @@ type Message struct {
 	Text   string `json:"text"`
 }
 
-// Глобальное хранилище в памяти (потоконебезопасно, для демо)
-var MessageStore = make(map[string]Message)
 
+type User struct{
+	ChatID int64 `json:"chat_id"`
+}
 
 // // состояния для валидации и сохранения
 // type UserState struct {

@@ -1,20 +1,20 @@
-package handlers
+package handlers_bot
 
 import (
 	"log"
 	"strconv"
 
-	"github.com/LainIwakuras-father/ValentinkaBot/internal/adapter"
-	"github.com/LainIwakuras-father/ValentinkaBot/internal/storage"
+	
+	"github.com/LainIwakuras-father/ValentinkaBot/internal/interfaces"
 )
 
 // поменять на интерфейсы
 type Handler struct {
-	adapter *adapter.TelegramAdapter
-	db      *storage.MemoryStorage
+	adapter interfaces.IBot
+	db      interfaces.IStorage
 }
 
-func NewHandler(adapter *adapter.TelegramAdapter, db *storage.MemoryStorage) *Handler {
+func NewHandler(adapter interfaces.IBot, db interfaces.IStorage) *Handler {
 	return &Handler{
 		adapter: adapter,
 		db:      db,
@@ -22,8 +22,14 @@ func NewHandler(adapter *adapter.TelegramAdapter, db *storage.MemoryStorage) *Ha
 }
 
 // HandleStart обрабатывает /start
-func (h *Handler) HandleStart(userID int64, chatID int64) {
-	// Сбрасываем состояние пользователя
+func (h *Handler) HandleStart(username string, chatID int64) {
+	
+	if err:=h.db.AddUser(chatID,username); err !=nil{
+		log.Printf("Ошибка добавления пользователя в базу")
+	}
+
+	log.Printf("👤 User added: %d (@%s)", chatID, username)
+
 
 	text := `Привествую Друг!
 Я бот сохраняющий и отправляющий твои сообщения кому либо!

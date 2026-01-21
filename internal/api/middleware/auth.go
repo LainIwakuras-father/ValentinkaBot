@@ -1,9 +1,9 @@
-package midleware
+package middleware
 
 import (
 
 	"github.com/gin-gonic/gin"
-	"github.com/LainIwakuras-father/ValentinkaBot/internal/interfaces"
+	
 )
 
 
@@ -11,7 +11,7 @@ type AuthMiddlewareSecretKey struct {
 	secretKey string
 }
 
-func NewAuthMiddleware(secretKey string) interfaces.AuthMiddleware {
+func NewAuthMiddleware(secretKey string) *AuthMiddlewareSecretKey {
 	return &AuthMiddlewareSecretKey{
 		secretKey: secretKey,
 	}
